@@ -1,4 +1,5 @@
 import { render } from 'solid-js/web';
+import { Router } from '@solidjs/router';
 import App from './App';
 import './index.css';
 import * as Sentry from '@sentry/browser';
@@ -36,4 +37,9 @@ progressierScript.setAttribute('src', 'https://progressier.app/z8yY3IKmfpDIw3mSn
 progressierScript.setAttribute('defer', 'true');
 document.querySelector('head').appendChild(progressierScript);
 
-render(() => <App />, document.getElementById('root'));
+// Wrap App with Router
+render(() => (
+  <Router>
+    <App />
+  </Router>
+), document.getElementById('root'));
