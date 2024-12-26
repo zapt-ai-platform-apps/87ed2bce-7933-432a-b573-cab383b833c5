@@ -10,7 +10,13 @@ function EmployeeDashboard() {
 
   const fetchLeaveData = async () => {
     setLoading(true);
-    const user = supabase.auth.user();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.error('Error fetching user:', userError);
+      setLoading(false);
+      return;
+    }
 
     // Fetch leave requests
     let { data: leaves, error } = await supabase

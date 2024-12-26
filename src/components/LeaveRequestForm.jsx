@@ -12,7 +12,13 @@ function LeaveRequestForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const user = supabase.auth.user();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.error('Error fetching user:', userError);
+      setLoading(false);
+      return;
+    }
 
     const { error } = await supabase.from('leaves').insert({
       employee_id: user.id,
@@ -41,7 +47,7 @@ function LeaveRequestForm() {
       <LeaveRequestFormFields
         startDate={startDate}
         setStartDate={setStartDate}
-        endDate={endDate}
+        endDate={setEndDate}
         setEndDate={setEndDate}
         type={type}
         setType={setType}
